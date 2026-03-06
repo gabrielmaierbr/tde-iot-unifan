@@ -3,13 +3,21 @@ body{
 }
 
 .botao-menu{
-    width: 150px;
+    width: 100%; 
+    max-width: 250px;
     height: 70px;
-    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .iconeFontAwesome{
     color: #d04937;
     font-size: 16px;
     margin-right: 1rem;
+}
+
+form {
+    width: 90%;
+    max-width: 600px;
 }
