@@ -13,6 +13,19 @@ body{
     color: #d04937;
     font-size: 16px;
     margin-right: 1rem;
+    transition: 0.2s;
+}
+
+.botao-menu:hover i,
+.botao-menu:focus i{
+    color: white;
+}
+
+.botao-menu:focus{
+    background-color: #c81313;
+    border-color: #bc1212;
+    box-shadow: 0 0 0 .25rem rgba(238, 57, 57, 0.5);
+    color: white;
 }
 
 form {
