@@ -10,15 +10,15 @@
 #include <HTTPClient.h>
 
 // ─── Credenciais WiFi ─────────────────────────────────────────────────────────
-const char* WIFI_SSID     = "NOME_DA_SUA_WIFI";
-const char* WIFI_PASSWORD = "SENHA_DA_SUA_WIFI";
+const char* WIFI_SSID     = "Casa35_2G";
+const char* WIFI_PASSWORD = "maieroliveira35@";
 
 // ─── Firebase ─────────────────────────────────────────────────────────────────
 const String FIREBASE_HOST = "https://tde-iot-yannes-default-rtdb.firebaseio.com";
 const String FIREBASE_SECRET = "";  
 
 // ID do dispositivo cadastrado no Firebase
-const String DEVICE_SENSOR = "device-sensor"; // Crie esse ID no Firebase ou altere para o gerado no dashboard
+const String DEVICE_SENSOR = "esp-test"; // Crie esse ID no Firebase ou altere para o gerado no dashboard
 
 // ─── Pinos ────────────────────────────────────────────────────────────────────
 const int trigPin = 12;
@@ -124,7 +124,7 @@ void loop() {
 
   if (distance >= 12.0) {
     digitalWrite(ledVerde, HIGH);
-  } else if (distance >= 6.0) {
+  } else if (distance >= 7.0) {
     digitalWrite(ledAmarelo, HIGH);
   } else {
     digitalWrite(ledVermelho, HIGH);
