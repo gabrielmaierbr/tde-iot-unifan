@@ -33,6 +33,13 @@ dist-ssr
 *.sln
 *.sw?
 
+#
+tools
+wokwi
+
 # Pasta agents
 *.agents
 *.mcp_config.json
+
+# Credenciais privadas do firmware ESP32 (nunca comitar!)
+wokwi/secrets.h

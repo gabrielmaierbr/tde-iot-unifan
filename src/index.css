@@ -1,20 +1,32 @@
+@import "leaflet/dist/leaflet.css";
 @import "tailwindcss";
 
 @theme {
-  --color-base-bg: #0F0F1A;
-  --color-surface-bg: #1A1A2E;
-  --color-primary: #00D4FF;
-  --color-accent: #7C3AED;
-  --color-online: #10B981;
-  --color-offline: #374151;
+  --color-base-bg: #0B0F13;
+  --color-surface-bg: #111820;
+  --color-surface-hover: #1A242E;
+  --color-primary: #00E676;
+  --color-accent: #00B0FF;
+  --color-normal: #00E676;
+  --color-warning: #FFEA00;
+  --color-danger: #FF1744;
+  --color-online: #00E676;
+  --color-offline: #4A5568;
 }
 
 @layer base {
   html, body {
     background-color: var(--color-base-bg);
     color: #ffffff;
-    font-family: "Inter", system-ui, sans-serif;
+    font-family: "Outfit", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Base custom utility for monospace */
+@layer utilities {
+  .font-mono {
+    font-family: "JetBrains Mono", monospace;
   }
 }

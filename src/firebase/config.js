@@ -17,9 +17,4 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const auth = getAuth(app);
 
-// Authenticate anonymously
-signInAnonymously(auth).catch((error) => {
-  console.error("Firebase Anonymous Auth failed:", error);
-});
-
 export { app, database, auth };
