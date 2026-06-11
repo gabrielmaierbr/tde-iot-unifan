@@ -18,7 +18,7 @@ const String FIREBASE_HOST = "https://tde-iot-yannes-default-rtdb.firebaseio.com
 const String FIREBASE_SECRET = "";  
 
 // ID do dispositivo cadastrado no Firebase
-const String DEVICE_SENSOR = "device-sensor"; // Crie esse ID no Firebase ou altere para o gerado no dashboard
+const String DEVICE_SENSOR = "esp-test"; // Crie esse ID no Firebase ou altere para o gerado no dashboard
 
 // ─── Pinos ────────────────────────────────────────────────────────────────────
 const int trigPin = 12;
@@ -55,13 +55,23 @@ bool httpPATCH(String url, String body) {
 
 // ─── Enviar Leitura ao Firebase ───────────────────────────────────────────────
 void reportSensorState(float dist) {
-  String url  = buildURL("devices/" + DEVICE_SENSOR + "/state");
-  // Envia a distância como "value". 
-  String body = "{\"value\":" + String(dist, 2) + "}";
+  // Converter a distância lida em % de preenchimento (fillLevel)
+  // Supondo que a lixeira tenha 20cm de profundidade. Ajuste 'binHeight' para a altura real.
+  float binHeight = 20.0;
+  float fillDist = binHeight - dist;
+  if (fillDist < 0) fillDist = 0;
+  int fillLevel = (int)((fillDist / binHeight) * 100.0);
+  if (fillLevel > 100) fillLevel = 100;
+
+  String url  = buildURL("lixeiras/" + DEVICE_SENSOR + "/state");
+  
+  // Envia o fillLevel e usa o ".sv": "timestamp" para o Firebase registrar a hora exata do servidor
+  String body = "{\"fillLevel\":" + String(fillLevel) + ", \"lastSeen\": {\".sv\": \"timestamp\"}}";
+  
   bool ok = httpPATCH(url, body);
   
   if (ok) {
-    Serial.printf("[FIREBASE] Distância %.2f cm enviada com sucesso.\n", dist);
+    Serial.printf("[FIREBASE] Distância %.2f cm -> Nível %d%% enviado com sucesso.\n", dist, fillLevel);
   } else {
     Serial.println("[FIREBASE] Erro ao enviar os dados.");
   }
@@ -69,10 +79,9 @@ void reportSensorState(float dist) {
 
 // ─── Atualiza status online do dispositivo ────────────────────────────────────
 void updateOnlineStatus(bool online) {
-  String url  = buildURL("devices/" + DEVICE_SENSOR);
-  String ts   = String(millis());
+  String url  = buildURL("lixeiras/" + DEVICE_SENSOR + "/state");
   String body = "{\"online\":" + String(online ? "true" : "false") +
-                ",\"lastSeen\":" + ts + "}";
+                ",\"lastSeen\": {\".sv\": \"timestamp\"}}";
   httpPATCH(url, body);
   Serial.println(online ? "[ESP32] Marcado como ONLINE no Firebase" : "[ESP32] Marcado como OFFLINE");
 }

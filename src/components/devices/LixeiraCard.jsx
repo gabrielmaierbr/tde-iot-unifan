@@ -3,10 +3,12 @@ import { Trash2, AlertTriangle, WifiOff } from 'lucide-react';
 import FillStatusBadge from './FillStatusBadge';
 import FillProgressBar from './FillProgressBar';
 import { motion } from 'framer-motion';
+import { getDerivedStatus } from '../../utils/deviceUtils';
 
 export default function LixeiraCard({ lixeira, onClick, isSelected }) {
   const { name, state } = lixeira;
-  const { fillLevel, status, lastSeen } = state || { fillLevel: 0, status: 'normal', lastSeen: 0 };
+  const { fillLevel, lastSeen } = state || { fillLevel: 0, lastSeen: 0 };
+  const status = getDerivedStatus(fillLevel);
 
   const [currentTime, setCurrentTime] = React.useState(Date.now());
 

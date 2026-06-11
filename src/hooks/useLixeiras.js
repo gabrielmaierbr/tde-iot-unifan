@@ -3,6 +3,8 @@ import { ref, onValue, update, remove, push, set } from 'firebase/database';
 import { database } from '../firebase/config';
 import toast from 'react-hot-toast';
 
+import { getDerivedStatus } from '../utils/deviceUtils';
+
 export function useLixeiras() {
   const [lixeiras, setLixeiras] = useState({});
   const [loading, setLoading] = useState(true);
@@ -15,10 +17,10 @@ export function useLixeiras() {
       
       // Check for newly full bins
       Object.entries(data).forEach(([id, lixeira]) => {
-        const prevStatus = prevLixeirasRef.current[id]?.state?.status;
-        const currentStatus = lixeira.state?.status;
+        const prevStatus = getDerivedStatus(prevLixeirasRef.current[id]?.state?.fillLevel);
+        const currentStatus = getDerivedStatus(lixeira.state?.fillLevel);
         
-        if (currentStatus === 'full' && prevStatus !== 'full') {
+        if (currentStatus === 'cheia' && prevStatus !== 'cheia') {
           toast.error(`Atenção: A lixeira "${lixeira.name || id}" atingiu capacidade máxima!`, {
             duration: 6000,
             icon: '⚠️',

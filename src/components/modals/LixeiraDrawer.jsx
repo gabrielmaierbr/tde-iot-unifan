@@ -6,14 +6,14 @@ import FillStatusBadge from '../devices/FillStatusBadge';
 import { useLixeiraActions } from '../../hooks/useLixeiras';
 import EditLixeiraModal from './EditLixeiraModal';
 import toast from 'react-hot-toast';
+import { getDerivedStatus } from '../../utils/deviceUtils';
 
 export default function LixeiraDrawer({ isOpen, onClose, lixeira }) {
-  if (!lixeira) return null;
-
-  const { name, state, location } = lixeira;
-  const { fillLevel, status, lastSeen } = state || { fillLevel: 0, status: 'normal', lastSeen: 0 };
+  const { name, state, location } = lixeira || {};
+  const { fillLevel, lastSeen } = state || { fillLevel: 0, lastSeen: 0 };
+  const status = getDerivedStatus(fillLevel);
   
-  const [currentTime, setCurrentTime] = React.useState(Date.now());
+  const [currentTime, setCurrentTime] = React.useState(() => Date.now());
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const { removeLixeira } = useLixeiraActions();
 
@@ -23,6 +23,8 @@ export default function LixeiraDrawer({ isOpen, onClose, lixeira }) {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  if (!lixeira) return null;
 
   const isOnline = lastSeen ? (currentTime - lastSeen) < 60000 : false;
 
